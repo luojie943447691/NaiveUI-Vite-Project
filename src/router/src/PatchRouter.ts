@@ -1,5 +1,5 @@
 import { Router } from "vue-router";
-import { DefineMenu } from "../runtime/defineMenus";
+import { DefineMenu } from "../../runtime/defineMenus";
 import { MenuToMap } from "./MenuToMap";
 
 interface PatchRouterOption {
@@ -10,6 +10,10 @@ export function PatchRouter(options?: PatchRouterOption) {
   const { menus } = options || {};
   console.log("menus", menus);
 
+  if (menus) {
+    
+  }
+
   const menuMap = MenuToMap(menus);
 
   let isFistLogin = true;
@@ -18,8 +22,13 @@ export function PatchRouter(options?: PatchRouterOption) {
     router.beforeEach((to, from) => {
       console.log("to", to);
       console.log("from", from);
-      if (from.path === "/" && menuMap["/"] && menuMap["/"]["redirect"] && isFistLogin) {
-        isFistLogin = false
+      if (
+        from.path === "/" &&
+        menuMap["/"] &&
+        menuMap["/"]["redirect"] &&
+        isFistLogin
+      ) {
+        isFistLogin = false;
         return {
           path: menuMap["/"]["redirect"],
           replace: true,

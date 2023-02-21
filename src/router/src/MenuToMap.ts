@@ -1,5 +1,5 @@
-import { DefineMenu } from "../runtime/defineMenus";
-import { Nullable } from "../types";
+import { DefineMenu } from "../../runtime/defineMenus";
+import { Nullable } from "../../types";
 
 export function MenuToMap(
   menus: Nullable<DefineMenu[]>,

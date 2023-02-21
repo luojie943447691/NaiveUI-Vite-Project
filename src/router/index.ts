@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import routes from "~pages";
-import { PatchRouter } from "./PatchRouter";
 import menus from "../runtime/defineMenus";
+import { PatchRouter } from "./src/PatchRouter";
 
 console.log("routes", routes);
 
