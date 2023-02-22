@@ -1,5 +1,5 @@
 export default defineComponent({
-    setup() {
-        return () => <>123</>
-    }
+  setup() {
+    return () => <>123</>
+  },
 })

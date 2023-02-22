@@ -1,20 +1,20 @@
-import { createRouter, createWebHistory } from "vue-router";
-import routes from "~pages";
-import menus from "../runtime/defineMenus";
-import { PatchRouter } from "./src/PatchRouter";
+import { createRouter, createWebHistory } from 'vue-router'
+import menus from '../runtime/defineMenus'
+import { PatchRouter } from './src/PatchRouter'
+import routes from '~pages'
 
-console.log("routes", routes);
+console.log('routes', routes)
 
 routes.push({
-  path: "/",
-  redirect: "/test-page",
-});
+  path: '/',
+  redirect: '/test-page',
+})
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
+})
 
-PatchRouter({ menus })(router);
+PatchRouter({ menus })(router)
 
-export default router;
+export default router

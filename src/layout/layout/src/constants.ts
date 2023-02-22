@@ -1,1 +1,1 @@
-export const LAYOUT_INTO = Symbol("layoutInfo");
+export const LAYOUT_INTO = Symbol('layoutInfo')

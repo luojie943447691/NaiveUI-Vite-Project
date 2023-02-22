@@ -1,20 +1,25 @@
-import { DefineMenu } from "../../runtime/defineMenus";
-import { Nullable } from "../../types";
+import { DefineMenu } from '../../runtime/defineMenus'
+import { Nullable } from '../../types'
+import { setMenus } from './useMenus'
 
 export function MenuToMap(
   menus: Nullable<DefineMenu[]>,
   result: Record<string, DefineMenu> = {}
 ) {
-  if (!menus) return result;
+  if (!menus) return result
+
+  setMenus(menus)
+
   for (let i = 0; i < menus.length; i++) {
-    const menu = menus[i];
+    const menu = menus[i]
+
     if (menu.children) {
-      result[menu.path] = menu;
-      MenuToMap(menu.children, result);
+      result[menu.path] = menu
+      MenuToMap(menu.children, result)
     } else {
-      result[menu.path] = menu;
+      result[menu.path] = menu
     }
   }
 
-  return result;
+  return result
 }

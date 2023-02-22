@@ -1,5 +1,5 @@
 export default defineComponent({
-    setup() {
-        return () => <>Test Page One</>
-    }
+  setup() {
+    return () => <>Test Page One</>
+  },
 })

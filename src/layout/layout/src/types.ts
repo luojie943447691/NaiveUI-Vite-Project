@@ -1,5 +1,5 @@
 export interface LayoutInfo {
-  hideSider: boolean;
-  hideTabs: boolean;
-  hideHeader: boolean;
+  hideSider: boolean
+  hideTabs: boolean
+  hideHeader: boolean
 }
