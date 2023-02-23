@@ -1,8 +1,6 @@
 import { darkTheme, dateZhCN, zhCN } from 'naive-ui'
 import { defineComponent } from 'vue'
-import { useRouter } from 'vue-router'
-import IconSvg from '@/assets/vue.svg'
-import Layout from './layout'
+import { RLayout } from './layout'
 
 export default defineComponent({
   setup() {
@@ -18,7 +16,7 @@ export default defineComponent({
 
     return () => (
       <NConfigProvider theme={theme.value} locale={zhCN} dateLocale={dateZhCN}>
-        <Layout />
+        <RLayout />
       </NConfigProvider>
     )
   },

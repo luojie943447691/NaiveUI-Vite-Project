@@ -1,20 +1,17 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import menus from '../runtime/defineMenus'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import defineInitialState from '@/runtime/defineInitialState'
+import { defineAccessState } from '../runtime/defineAccessState'
+import defineMenus from '../runtime/defineMenus'
 import { PatchRouter } from './src/PatchRouter'
 import routes from '~pages'
 
 console.log('routes', routes)
 
-routes.push({
-  path: '/',
-  redirect: '/test-page',
-})
-
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 })
 
-PatchRouter({ menus })(router)
+PatchRouter({ defineMenus, defineAccessState, defineInitialState })(router)
 
 export default router

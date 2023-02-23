@@ -1,5 +1,1 @@
-export default defineComponent({
-  setup() {
-    return () => <>layout</>
-  },
-})
+export { Layout as RLayout } from './layout'

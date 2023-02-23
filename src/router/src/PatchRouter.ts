@@ -1,46 +1,56 @@
 import { Router } from 'vue-router'
+import { AccessState } from '@/runtime/defineAccessState'
+import { InitialState } from '@/runtime/defineInitialState'
 import { DefineMenu } from '../../runtime/defineMenus'
+import { Nullable } from '../../types'
 import { MenuToMap } from './MenuToMap'
+import { setAccessState } from './useAccess'
 import { setMenus } from './useMenus'
 
 interface PatchRouterOption {
-  menus?: DefineMenu[]
+  defineMenus(): DefineMenu[]
+  defineAccessState(
+    initialState: InitialState | null
+  ): AccessState | Promise<AccessState>
+  defineInitialState: () => InitialState | Promise<InitialState>
 }
 
-export function PatchRouter(options?: PatchRouterOption) {
-  const { menus } = options || {}
-  console.log('menus', menus)
-
-  if (menus) {
-    setMenus(menus)
-  }
-
-  const menuMap = MenuToMap(menus)
-
+export function PatchRouter(options: PatchRouterOption) {
+  const { defineMenus, defineAccessState, defineInitialState } = options
+  let accessState: Nullable<AccessState>
+  let initialState: Nullable<InitialState>
+  let menus: Nullable<DefineMenu[]>
   let isFistLogin = true
 
   return (router: Router) => {
-    router.beforeEach((to, from) => {
-      console.log('to', to)
-      console.log('from', from)
+    router.beforeEach(async (to, from) => {
+      if (defineMenus && !menus) {
+        menus = defineMenus()
+        setMenus(menus)
+      }
 
-      if (
-        from.path === '/' &&
-        menuMap['/'] &&
-        menuMap['/']['redirect'] &&
-        isFistLogin
-      ) {
+      if (defineInitialState && !initialState) {
+        initialState = await defineInitialState()
+        accessState = await defineAccessState(initialState)
+        setAccessState(accessState)
+      }
+
+      const menuMap = MenuToMap(menus)
+
+      const curMenu = menuMap[to.path]
+
+      if (from.path === '/' && curMenu && curMenu['redirect'] && isFistLogin) {
         isFistLogin = false
 
         return {
-          path: menuMap['/']['redirect'],
+          path: curMenu['redirect'],
           replace: true,
         }
       }
     })
 
-    router.afterEach(() => {
-      console.log('结束了')
-    })
+    // router.afterEach(() => {
+    //   console.log('结束了')
+    // })
   }
 }
