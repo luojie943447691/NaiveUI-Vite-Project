@@ -8,15 +8,11 @@ const getMenus = () => {
     setTimeout(() => {
       resolve([
         {
-          page: 'test-page-two1',
+          page: '/system-one/page-son-one',
           access: true,
         },
         {
-          page: 'test-page-two',
-          access: true,
-        },
-        {
-          page: '/test-page1',
+          page: '/system-two/page-son-two',
           access: true,
         },
       ])

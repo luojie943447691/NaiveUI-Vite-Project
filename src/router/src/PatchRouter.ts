@@ -39,7 +39,7 @@ export function PatchRouter(options: PatchRouterOption) {
 
       const curMenu = menuMap[to.path]
 
-      if (from.path === '/' && curMenu && curMenu['redirect'] && isFistLogin) {
+      if (to.path === '/' && curMenu && curMenu['redirect'] && isFistLogin) {
         isFistLogin = false
 
         return {

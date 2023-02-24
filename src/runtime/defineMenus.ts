@@ -27,15 +27,15 @@ const menus: DefineMenu[] = [
     children: [
       {
         path: '/system-one/page-son-one',
-        name: '子菜单1',
+        name: '主菜单1-子菜单1',
       },
       {
         path: '/system-one/page-son-two',
-        name: '子菜单2',
+        name: '主菜单1-子菜单2',
       },
       {
         path: '/system-one/page-son-three',
-        name: '子菜单3',
+        name: '主菜单1-子菜单3',
       },
     ],
   },
@@ -45,15 +45,15 @@ const menus: DefineMenu[] = [
     children: [
       {
         path: '/system-two/page-son-one',
-        name: '子菜单1',
+        name: '主菜单2-子菜单1',
       },
       {
         path: '/system-two/page-son-two',
-        name: '子菜单2',
+        name: '主菜单2-子菜单2',
       },
       {
         path: '/system-two/page-son-three',
-        name: '子菜单3',
+        name: '主菜单2-子菜单3',
       },
     ],
   },

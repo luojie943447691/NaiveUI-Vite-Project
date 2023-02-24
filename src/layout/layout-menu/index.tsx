@@ -11,7 +11,7 @@ import { DefineMenu } from '../../runtime/defineMenus'
 import { treeForEach } from '../../utils'
 import { useCurrentMenu } from '../layout/src/hooks'
 import { useCollapsed } from '../layout/src/useCollapsed'
-import { treeToMap } from './treeToMap'
+import { allSubtreeToMap } from './src/allSubtreeToMap'
 
 export const LayoutMenu = defineComponent({
   setup(props, { slots }) {
@@ -31,7 +31,8 @@ export const LayoutMenu = defineComponent({
         (item) => item.children && leafMenus.push(item)
       )
 
-      const leafMenusMap = treeToMap(leafMenus)
+      // 拿到所有子菜单的 map 集合
+      const leafMenusMap = allSubtreeToMap(leafMenus)
 
       const filterMunes = treeFilter(
         leafMenus,

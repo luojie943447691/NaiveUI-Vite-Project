@@ -47,7 +47,13 @@ export function useLayoutInfo(options: { slots: Readonly<Slots> }) {
   const currentMenuRef = computed(() => {
     const path = route.path
 
+    console.log('currentMenuRef', path)
+
     return treeFind(menus.value, 'children', (item) => item.path === path)
+  })
+
+  watch(currentMenuRef, () => {
+    console.log('变化了')
   })
 
   provide(CURRENT_MENU_KEY, currentMenuRef)

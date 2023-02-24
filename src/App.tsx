@@ -1,9 +1,20 @@
 import { darkTheme, dateZhCN, zhCN } from 'naive-ui'
 import { defineComponent } from 'vue'
-import { RLayout } from './layout'
+import { useRouter } from 'vue-router'
+import { RLayout } from './layout/layout'
+// import { RLayoutTabs } from './layout/layout-tabs'
+
+const RLayoutTabs = defineAsyncComponent(() => import('./layout/layout-tabs'))
 
 export default defineComponent({
   setup() {
+    const isReadyRef = ref()
+    const router = useRouter()
+
+    router.isReady().then(() => {
+      isReadyRef.value = true
+    })
+
     const theme = computed(() => {
       const localTheme = window.localStorage.getItem('theme') ?? 'lightTheme'
 
@@ -16,7 +27,12 @@ export default defineComponent({
 
     return () => (
       <NConfigProvider theme={theme.value} locale={zhCN} dateLocale={dateZhCN}>
-        <RLayout />
+        <RLayout>
+          {{
+            header: () => '这是header',
+            tabs: () => <RLayoutTabs />,
+          }}
+        </RLayout>
       </NConfigProvider>
     )
   },
