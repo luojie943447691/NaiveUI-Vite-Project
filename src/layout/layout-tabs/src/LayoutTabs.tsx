@@ -34,8 +34,6 @@ const options = [
 
 export const LayoutTabs = defineComponent({
   setup() {
-    console.log('组件执行了初始化')
-
     const localOpenMenus = JSON.parse(
       localStorage.getItem('LOCAL_PAGE_DATA') ?? '{}'
     ) as LocalPageInfo
@@ -128,7 +126,7 @@ export const LayoutTabs = defineComponent({
     const yRef = ref(0)
 
     const handleSelect = (key: string) => {
-      if (allTabsRef.value.length <= 1) return
+      if (allTabsRef.value.length <= 1) return (showDropdownRef.value = false)
       const rightKeyCheckedPath = rightKeyCheckedPathRef.value
       const currentMenuPath = currentMenuRef.value?.path
 
