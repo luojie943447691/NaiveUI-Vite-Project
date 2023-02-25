@@ -8,6 +8,10 @@ export default defineComponent({
       collapsedRef.value = !collapsedRef.value
     }
 
-    return () => <NButton onClick={handleHideSider}>隐藏边框(主1-子1)</NButton>
+    return () => (
+      <div style='height:calc(100vh - var(--safe-area-inset-top))'>
+        <NButton onClick={handleHideSider}>隐藏边框(主1-子1)</NButton>
+      </div>
+    )
   },
 })

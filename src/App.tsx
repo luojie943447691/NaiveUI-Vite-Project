@@ -1,6 +1,8 @@
 import { darkTheme, dateZhCN, zhCN } from 'naive-ui'
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
+import { NaiveUIProvider } from './common/components/NaiveUIProvider'
+import { setLoadingBar } from './common/hooks/useLoadingBar'
 import { RLayout } from './layout/layout'
 // import { RLayoutTabs } from './layout/layout-tabs'
 
@@ -15,6 +17,10 @@ export default defineComponent({
       isReadyRef.value = true
     })
 
+    // const loadingBar = useLoadingBar()
+
+    // setLoadingBar(loadingBar)
+
     const theme = computed(() => {
       const localTheme = window.localStorage.getItem('theme') ?? 'lightTheme'
 
@@ -25,15 +31,22 @@ export default defineComponent({
       return localTheme === 'lightTheme' ? null : darkTheme
     })
 
-    return () => (
-      <NConfigProvider theme={theme.value} locale={zhCN} dateLocale={dateZhCN}>
-        <RLayout>
-          {{
-            header: () => '这是header',
-            tabs: () => <RLayoutTabs />,
-          }}
-        </RLayout>
-      </NConfigProvider>
-    )
+    return () =>
+      isReadyRef.value && (
+        <NConfigProvider
+          theme={theme.value}
+          locale={zhCN}
+          dateLocale={dateZhCN}
+        >
+          <NaiveUIProvider>
+            <RLayout>
+              {{
+                header: () => '这是header',
+                tabs: () => <RLayoutTabs />,
+              }}
+            </RLayout>
+          </NaiveUIProvider>
+        </NConfigProvider>
+      )
   },
 })

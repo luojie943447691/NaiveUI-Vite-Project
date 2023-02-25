@@ -1,6 +1,7 @@
-import { RouterView } from 'vue-router'
-import { RLayoutHeader } from '@/layout/layout-header'
+import { RLayoutContent } from '@/layout/layout-content'
 import { LayoutMenu } from '@/layout/layout-menu'
+import { DefineMenu } from '@/runtime/defineMenus'
+import { CURRENT_MENU_KEY } from './constants'
 import { useCollapsed } from './useCollapsed'
 import { useLayoutInfo } from './useLayoutInfo'
 
@@ -8,6 +9,8 @@ export const Layout = defineComponent({
   setup(props, { slots }) {
     const layoutInfo = useLayoutInfo({ slots })
     const collapsedRef = useCollapsed()
+
+    const show = ref<boolean>(false)
 
     return () => (
       <>
@@ -45,7 +48,7 @@ export const Layout = defineComponent({
                     }}
                   >
                     {{
-                      default: () => <RouterView />,
+                      default: () => <RLayoutContent />,
                     }}
                   </NLayout>
                 </div>

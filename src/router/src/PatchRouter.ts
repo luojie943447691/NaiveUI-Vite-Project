@@ -1,10 +1,12 @@
 import { Router } from 'vue-router'
+import { useSelfLoadingBar } from '@/common/hooks/useLoadingBar'
 import { AccessState } from '@/runtime/defineAccessState'
 import { InitialState } from '@/runtime/defineInitialState'
 import { DefineMenu } from '../../runtime/defineMenus'
 import { Nullable } from '../../types'
 import { MenuToMap } from './MenuToMap'
 import { setAccessState } from './useAccess'
+import { loadingBarStart } from './useLoadingBar'
 import { setMenus } from './useMenus'
 
 interface PatchRouterOption {
@@ -21,9 +23,12 @@ export function PatchRouter(options: PatchRouterOption) {
   let initialState: Nullable<InitialState>
   let menus: Nullable<DefineMenu[]>
   let isFistLogin = true
+  const loadingBarRef = useSelfLoadingBar()
 
   return (router: Router) => {
     router.beforeEach(async (to, from) => {
+      loadingBarRef.value?.start()
+
       if (defineMenus && !menus) {
         menus = defineMenus()
         setMenus(menus)
@@ -49,8 +54,9 @@ export function PatchRouter(options: PatchRouterOption) {
       }
     })
 
-    // router.afterEach(() => {
-    //   console.log('结束了')
-    // })
+    router.afterEach(() => {
+      // console.log('结束了')
+      loadingBarRef.value?.finish()
+    })
   }
 }
