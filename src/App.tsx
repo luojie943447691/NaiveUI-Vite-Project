@@ -2,9 +2,7 @@ import { darkTheme, dateZhCN, zhCN } from 'naive-ui'
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { NaiveUIProvider } from './common/components/NaiveUIProvider'
-import { setLoadingBar } from './common/hooks/useLoadingBar'
 import { RLayout } from './layout/layout'
-// import { RLayoutTabs } from './layout/layout-tabs'
 
 const RLayoutTabs = defineAsyncComponent(() => import('./layout/layout-tabs'))
 
@@ -16,10 +14,6 @@ export default defineComponent({
     router.isReady().then(() => {
       isReadyRef.value = true
     })
-
-    // const loadingBar = useLoadingBar()
-
-    // setLoadingBar(loadingBar)
 
     const theme = computed(() => {
       const localTheme = window.localStorage.getItem('theme') ?? 'lightTheme'

@@ -1,5 +1,6 @@
 import { DefineComponent, Transition } from 'vue'
 import { RouterView } from 'vue-router'
+import { RKeepAlive } from '@/layout/keep-alive'
 
 export const LayoutContent = defineComponent({
   setup() {
@@ -25,7 +26,13 @@ export const LayoutContent = defineComponent({
               duration={150}
               appear
             >
-              <Component />
+              <div style='height:100%;width:100%'>
+                <RKeepAlive>
+                  {{
+                    default: () => <Component />,
+                  }}
+                </RKeepAlive>
+              </div>
             </Transition>
           ),
         }}

@@ -50,8 +50,6 @@ export function useLayoutInfo(options: { slots: Readonly<Slots> }) {
     return treeFind(menus.value, 'children', (item) => item.path === path)
   })
 
-  console.log('注入了', currentMenuRef)
-
   provide(CURRENT_MENU_KEY, currentMenuRef)
 
   // 如果后续还需要做激活菜单的操作就在这里

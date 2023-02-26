@@ -1,6 +1,7 @@
 import { useSiderCollapsed } from '@/layout/layout/src/hooks'
 
 export default defineComponent({
+  name: 'SystemTwoSonTwo',
   setup() {
     const collapsedRef = useSiderCollapsed()
 
@@ -8,6 +9,15 @@ export default defineComponent({
       collapsedRef.value = !collapsedRef.value
     }
 
-    return () => <NButton onClick={handleHideSider}>隐藏边框(主2-子2)</NButton>
+    const inputRef = ref()
+
+    return () => (
+      <>
+        <NButton onClick={handleHideSider}>
+          隐藏边框(主2-子2)需要 keepAlive
+        </NButton>
+        <NInput v-model={inputRef.value} />
+      </>
+    )
   },
 })
