@@ -192,6 +192,8 @@ export const LayoutTabs = defineComponent({
       })
     }
 
+    const NTabAny = NTab as any
+
     return () => (
       <>
         <NTabs
@@ -209,24 +211,42 @@ export const LayoutTabs = defineComponent({
               <>
                 {allTabsRef.value.map((item) => {
                   return (
-                    <NTabPane
+                    // <NTabPane
+                    //   key={item.path}
+                    //   name={item.path}
+                    //   tab={item.name}
+                    //   tabProps={{
+                    //     onContextmenu(e) {
+                    //       e.preventDefault()
+
+                    //       rightKeyCheckedPathRef.value = (
+                    //         e.currentTarget as HTMLElement
+                    //       ).dataset.name
+
+                    //       xRef.value = e.pageX
+                    //       yRef.value = e.pageY
+                    //       showDropdownRef.value = true
+                    //     },
+                    //   }}
+                    // />
+
+                    <NTabAny
                       key={item.path}
                       name={item.path}
-                      tab={item.name}
-                      tabProps={{
-                        onContextmenu(e) {
-                          e.preventDefault()
+                      onContextmenu={(e: MouseEvent) => {
+                        e.preventDefault()
 
-                          rightKeyCheckedPathRef.value = (
-                            e.currentTarget as HTMLElement
-                          ).dataset.name
+                        rightKeyCheckedPathRef.value = (
+                          e.currentTarget as HTMLElement
+                        ).dataset.name
 
-                          xRef.value = e.pageX
-                          yRef.value = e.pageY
-                          showDropdownRef.value = true
-                        },
+                        xRef.value = e.pageX
+                        yRef.value = e.pageY
+                        showDropdownRef.value = true
                       }}
-                    />
+                    >
+                      {{ default: () => item.name }}
+                    </NTabAny>
                   )
                 })}
               </>

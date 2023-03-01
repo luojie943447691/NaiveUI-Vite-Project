@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { NaiveUIProvider } from './common/components/NaiveUIProvider'
 import useRequest from './hooks/use-request'
 import { RLayout } from './layout/layout'
-import getDog from './request/test'
+import getStudentList from './request/test'
 
 const RLayoutTabs = defineAsyncComponent(() => import('./layout/layout-tabs'))
 
@@ -28,24 +28,20 @@ export default defineComponent({
     })
 
     // 测试  request
-    useRequest(async () => {
-      const res = await getDog()
-      console.log('res', res)
-    })
+    const { loadingRef } = useRequest(
+      async (id: number) => {
+        const res = await getStudentList({
+          id: id,
+        })
 
-    const tt = ref(1)
+        // console.log('res', res)
 
-    function test() {
-      test2()
-    }
-
-    function test2() {
-      console.log('test2 执行了', tt.value)
-    }
-
-    watchEffect(() => {
-      test()
-    })
+        return res.data
+      },
+      {
+        defaultParams: [1],
+      }
+    )
 
     return () =>
       isReadyRef.value && (
@@ -54,7 +50,7 @@ export default defineComponent({
           locale={zhCN}
           dateLocale={dateZhCN}
         >
-          <NButton onClick={() => (tt.value += 1)}>123</NButton>
+          <h1>{loadingRef.value ? '加载中...' : '完成了'}</h1>
           <NaiveUIProvider>
             <RLayout>
               {{

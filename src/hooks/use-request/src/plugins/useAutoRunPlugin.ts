@@ -1,22 +1,15 @@
-import Fetch from '../Fetch'
-import { Options, Plugin, PluginReturn } from '../types'
+import { Plugin } from '../types'
 
 const useAutoRunPlugin: Plugin<any, any> = (fetchInstance, options) => {
   const { manual, ready, refreshDepsAction } = options
-  let isRunned = false
 
   onBeforeMount(() => {
-    if (isRunned) return
     if (manual) return
 
     watchEffect(() => {
-      isRunned = true
-
       if (refreshDepsAction) {
         refreshDepsAction()
       } else {
-        console.log('watchEffect')
-
         fetchInstance.refresh()
       }
     })
@@ -25,7 +18,7 @@ const useAutoRunPlugin: Plugin<any, any> = (fetchInstance, options) => {
   return {
     onBefore(params) {
       const stopNow = ready && !ready(params)
-      console.log('执行了 插件 onBefore')
+      // console.log('执行了 useAutoRunPlugin 插件 onBefore')
 
       return {
         stopNow,
@@ -33,11 +26,5 @@ const useAutoRunPlugin: Plugin<any, any> = (fetchInstance, options) => {
     },
   }
 }
-
-// useAutoRunPlugin.onInit = ({ ready, manual }) => {
-//   return {
-//     loading: !manual && ready,
-//   }
-// }
 
 export default useAutoRunPlugin

@@ -1,7 +1,13 @@
 import axios from 'axios'
 
-function getDog() {
-  return axios.get('https://dog.ceo/api/breeds/image/random')
+export interface Query {
+  id: number
 }
 
-export default getDog
+function getStudentList(params?: Query) {
+  return axios.get('http://localhost:3000/getStudentList', {
+    params,
+  })
+}
+
+export default getStudentList

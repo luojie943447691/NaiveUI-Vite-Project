@@ -13,35 +13,16 @@ function useRequestImplement<TData, TParams extends any[]>(
     ...rest,
   }
 
-  const initState = plugins
-    .map((plugin) => plugin?.onInit?.(fetchOptions))
-    .filter(Boolean)
+  // console.log('创建了')
 
-  console.log('创建了')
-
-  const fetchInstance = new Fetch(
-    service,
-    fetchOptions,
-    Object.assign({}, ...initState)
-  )
+  const fetchInstance = new Fetch(service, fetchOptions)
 
   fetchInstance.pluginImpls = plugins.map((plugin) =>
     plugin(fetchInstance, fetchOptions)
   )
 
-  onMounted(() => {
-    if (!manual) {
-      const params =
-        fetchInstance.state?.params ||
-        options.defaultParams ||
-        ([] as any[] as TParams)
-
-      fetchInstance.run(...params)
-    }
-  })
-
   return {
-    loading: fetchInstance.state?.loading,
+    loadingRef: computed(() => fetchInstance.state?.loading),
     run: fetchInstance.run.bind(fetchInstance),
   }
 }

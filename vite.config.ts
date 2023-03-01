@@ -64,5 +64,8 @@ export default async () => {
         ],
       }),
     ],
+    server: {
+      port: 5174,
+    },
   })
 }

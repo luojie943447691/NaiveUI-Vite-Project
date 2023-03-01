@@ -8,11 +8,11 @@ export type Service<TData, TParams extends any[]> = (
 export interface Options<TData, TParams extends any[]> {
   manual?: boolean
 
-  onBefore?: (params: TParams) => void
-  onSuccess?: (data: TData, params: TParams) => void
-  onError?: (e: Error, params: TParams) => void
+  onBefore?: (params?: TParams) => void
+  onSuccess?: (data: TData, params?: TParams) => void
+  onError?: (e: Error, params?: TParams) => void
   // formatResult?: (res: any) => TData;
-  onFinally?: (params: TParams, data?: TData, e?: Error) => void
+  onFinally?: (params?: TParams, data?: TData, e?: Error) => void
 
   defaultParams?: TParams
 
@@ -54,7 +54,7 @@ export interface Options<TData, TParams extends any[]> {
   retryInterval?: number
 
   // ready
-  ready?: (params: TParams) => boolean
+  ready?: (params?: TParams) => boolean
 
   // // [key: string]: any;
 }
@@ -64,14 +64,10 @@ export type Plugin<TData, TParams extends any[]> = {
     fetchInstance: Fetch<TData, TParams>,
     options: Options<TData, TParams>
   ): PluginReturn<TData, TParams>
-  onInit?: (
-    options: Options<TData, TParams>
-  ) => UnwrapRef<Partial<FetchState<TData, TParams>>>
 }
 
 export interface FetchState<TData, TParams extends any[]> {
   loading?: boolean
-  params?: TParams
   data?: TData
   error?: Error
 }

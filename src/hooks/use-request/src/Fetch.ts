@@ -1,26 +1,25 @@
 import { FetchState, Options, PluginReturn, Service } from './types'
 
+const data: any[] = []
+
 export default class Fetch<TData, TParams extends any[]> {
   pluginImpls: PluginReturn<TData, TParams>[] = []
-  state: FetchState<TData, TParams> | undefined
+  state = reactive({}) as FetchState<TData, TParams>
+  params: TParams | undefined
 
   constructor(
     public service: Service<TData, TParams>,
-    public options: Options<TData, TParams>,
-    public initState: Partial<FetchState<TData, TParams>> = {}
+    public options: Options<TData, TParams>
   ) {
-    this.state = {
-      ...this.state,
-      loading: !options.manual,
-      ...initState,
-    }
+    const { defaultParams, manual } = options
+
+    this.params = defaultParams
   }
 
   setState(s: Partial<FetchState<TData, TParams>> = {}) {
-    this.state = {
-      ...this.state,
-      ...s,
-    }
+    this.state.data = s.data
+    this.state.error = s.error
+    this.state.loading = s.loading
   }
 
   runPluginHandler(key: keyof PluginReturn<TData, TParams>, ...rest: any[]) {
@@ -44,20 +43,19 @@ export default class Fetch<TData, TParams extends any[]> {
       return
     }
 
-    this.setState({
-      loading: true,
-      params: params,
-      ...state,
-    })
-
     if (returnNow) {
       return
     }
 
     this.options.onBefore?.(params)
 
-    // console.log('runAsync')
     try {
+      this.setState({
+        loading: true,
+        params: params,
+        ...state,
+      })
+
       // 执行请求
       let { servicePromise } = this.runPluginHandler(
         'onRequest',
@@ -66,34 +64,28 @@ export default class Fetch<TData, TParams extends any[]> {
       )
 
       if (!servicePromise) {
-        servicePromise = this.service(...params)
+        servicePromise = this.service(...(params || ({} as TParams)))
       }
 
-      console.log('拿到正常结果前一刻')
       const res = await servicePromise
-      console.log('拿到正常结果后一刻')
 
-      this.setState({
-        data: res,
-        error: undefined,
-        loading: false,
-      })
-
-      return this.state
+      setTimeout(() => {
+        this.setState({
+          data: res,
+          error: undefined,
+          loading: false,
+        })
+      }, 2000)
     } catch (error: any) {
       this.setState({
         loading: false,
         error,
       })
-
-      return this.state
     }
   }
 
   run(...params: TParams) {
-    console.log('run')
-
-    return this.runAsync(...params).catch((error) => {
+    this.runAsync(...params).catch((error) => {
       if (!this.options.onError) {
         console.error(error)
       }
@@ -101,9 +93,7 @@ export default class Fetch<TData, TParams extends any[]> {
   }
 
   refresh() {
-    console.log('refresh')
-
-    const params = this.state?.params || ([] as any[] as TParams)
+    const params = this.params || (data as TParams)
     this.runAsync(...params)
   }
 }
