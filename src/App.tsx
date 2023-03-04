@@ -1,8 +1,10 @@
 import { darkTheme, dateZhCN, zhCN } from 'naive-ui'
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
+import { NaiveUIProvider } from './common/components/NaiveUIProvider'
+import useRequest from './hooks/use-request'
 import { RLayout } from './layout/layout'
-// import { RLayoutTabs } from './layout/layout-tabs'
+import getStudentList from './request/test'
 
 const RLayoutTabs = defineAsyncComponent(() => import('./layout/layout-tabs'))
 
@@ -25,6 +27,22 @@ export default defineComponent({
       return localTheme === 'lightTheme' ? null : darkTheme
     })
 
+    // 测试  request
+    const { loadingRef } = useRequest(
+      async (id: number) => {
+        const res = await getStudentList({
+          id: id,
+        })
+
+        // console.log('res', res)
+
+        return res.data
+      },
+      {
+        defaultParams: [1],
+      }
+    )
+
     return () =>
       isReadyRef.value && (
         <NConfigProvider
@@ -32,14 +50,15 @@ export default defineComponent({
           locale={zhCN}
           dateLocale={dateZhCN}
         >
-          <NLoadingBarProvider>
+          <h1>{loadingRef.value ? '加载中...' : '完成了'}</h1>
+          <NaiveUIProvider>
             <RLayout>
               {{
                 header: () => '这是header',
                 tabs: () => <RLayoutTabs />,
               }}
             </RLayout>
-          </NLoadingBarProvider>
+          </NaiveUIProvider>
         </NConfigProvider>
       )
   },

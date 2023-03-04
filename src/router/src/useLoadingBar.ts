@@ -1,12 +1,9 @@
-import { useLoadingBar } from 'naive-ui'
-import { LoadingBarApiInjection } from 'naive-ui/es/loading-bar/src/LoadingBarProvider'
-
 const loadingBar = useLoadingBar()
 
-export function LoadingBarStart() {
+export function loadingBarStart() {
   loadingBar.start()
 }
 
-export function LoadingBarFinish() {
-  loadingBar?.finish()
+export function loadingBarFinish() {
+  loadingBar.finish()
 }

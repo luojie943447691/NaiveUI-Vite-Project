@@ -59,7 +59,12 @@ module.exports = {
     // @typescript-eslint
     '@typescript-eslint/no-explicit-any': 'off',
     // prettier
-    'prettier/prettier': 'warn',
+    'prettier/prettier': [
+      'warn',
+      {
+        endOfLine: 'auto', //不让prettier检测文件每行结束的格式
+      },
+    ],
 
     // import
     'import/first': 'error',
