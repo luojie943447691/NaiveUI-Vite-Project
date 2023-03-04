@@ -5,6 +5,7 @@ import { DefineMenu } from '../../runtime/defineMenus'
 import { Nullable } from '../../types'
 import { MenuToMap } from './MenuToMap'
 import { setAccessState } from './useAccess'
+import { LoadingBarFinish, LoadingBarStart } from './useLoadingBar'
 import { setMenus } from './useMenus'
 
 interface PatchRouterOption {
@@ -24,6 +25,10 @@ export function PatchRouter(options: PatchRouterOption) {
 
   return (router: Router) => {
     router.beforeEach(async (to, from) => {
+      if (to.path !== '/') {
+        LoadingBarStart()
+      }
+
       if (defineMenus && !menus) {
         menus = defineMenus()
         setMenus(menus)
@@ -49,8 +54,10 @@ export function PatchRouter(options: PatchRouterOption) {
       }
     })
 
-    // router.afterEach(() => {
-    //   console.log('结束了')
-    // })
+    router.afterEach((to) => {
+      if (to.path !== '/') {
+        LoadingBarFinish()
+      }
+    })
   }
 }

@@ -25,15 +25,22 @@ export default defineComponent({
       return localTheme === 'lightTheme' ? null : darkTheme
     })
 
-    return () => (
-      <NConfigProvider theme={theme.value} locale={zhCN} dateLocale={dateZhCN}>
-        <RLayout>
-          {{
-            header: () => '这是header',
-            tabs: () => <RLayoutTabs />,
-          }}
-        </RLayout>
-      </NConfigProvider>
-    )
+    return () =>
+      isReadyRef.value && (
+        <NConfigProvider
+          theme={theme.value}
+          locale={zhCN}
+          dateLocale={dateZhCN}
+        >
+          <NLoadingBarProvider>
+            <RLayout>
+              {{
+                header: () => '这是header',
+                tabs: () => <RLayoutTabs />,
+              }}
+            </RLayout>
+          </NLoadingBarProvider>
+        </NConfigProvider>
+      )
   },
 })
