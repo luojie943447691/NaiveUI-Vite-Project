@@ -7,7 +7,6 @@ const usePollingPlugin: Plugin<any, any> = (fetchInstance, options) => {
     pollingInterval,
     pollingWhenHidden,
     manual,
-    loadingDelay,
     ready,
   } = options
 
@@ -19,6 +18,7 @@ const usePollingPlugin: Plugin<any, any> = (fetchInstance, options) => {
   let currentErrCount = 0
   // 用于判断首次加载之后，调用 run/runAsync 时判断 manual 的问题
   let loaded = false
+  let isCanceled = false
 
   const doWatch = () => {
     watchStop = watch(
@@ -39,6 +39,8 @@ const usePollingPlugin: Plugin<any, any> = (fetchInstance, options) => {
   }
 
   function visibilitychange() {
+    if (isCanceled) return
+
     if (window.document.hidden) {
       clearSetInterval()
       watchStop?.()
@@ -103,6 +105,7 @@ const usePollingPlugin: Plugin<any, any> = (fetchInstance, options) => {
     onCancel() {
       clearSetInterval()
       watchStop?.()
+      isCanceled = true
     },
   }
 }
