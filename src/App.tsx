@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { NaiveUIProvider } from './common/components/NaiveUIProvider'
 import useRequest from './hooks/use-request'
 import { RLayout } from './layout/layout'
+import postStudentList from './request/postTest'
 import getStudentList from './request/test'
 
 const RLayoutTabs = defineAsyncComponent(() => import('./layout/layout-tabs'))
@@ -27,10 +28,14 @@ export default defineComponent({
       return localTheme === 'lightTheme' ? null : darkTheme
     })
 
+    const pollingErrorRetryCountRef = ref(2)
+
     // 测试  request
-    const { loadingRef } = useRequest(
-      async (id: number) => {
-        const res = await getStudentList({
+    const { loadingRef, dataRef, cancel, run, runAsync } = useRequest(
+      async () => {
+        const id = Math.ceil(Math.random() * 3)
+
+        const res = await postStudentList({
           id: id,
         })
 
@@ -39,7 +44,12 @@ export default defineComponent({
         return res.data
       },
       {
-        defaultParams: [1],
+        // ready: () => false,
+        loadingDelay: 500,
+        get pollingErrorRetryCount() {
+          return pollingErrorRetryCountRef.value
+        },
+        pollingInterval: 3000,
       }
     )
 
@@ -50,7 +60,25 @@ export default defineComponent({
           locale={zhCN}
           dateLocale={dateZhCN}
         >
-          <h1>{loadingRef.value ? '加载中...' : '完成了'}</h1>
+          <h1>
+            {loadingRef.value
+              ? '加载中...'
+              : `完成了${dataRef.value?.[0].name}`}
+          </h1>
+          <NButton
+            onClick={() => {
+              cancel()
+            }}
+          >
+            取消
+          </NButton>
+          <NButton
+            onClick={() => {
+              run()
+            }}
+          >
+            继续
+          </NButton>
           <NaiveUIProvider>
             <RLayout>
               {{

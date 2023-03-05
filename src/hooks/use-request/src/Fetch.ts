@@ -1,3 +1,4 @@
+import { isNullable } from '@/utils'
 import { FetchState, Options, PluginReturn, Service } from './types'
 
 const data: any[] = []
@@ -7,17 +8,22 @@ export default class Fetch<TData, TParams extends any[]> {
   state = reactive({}) as FetchState<TData, TParams>
   params: TParams | undefined
 
+  // retry 相关
+
   constructor(
     public service: Service<TData, TParams>,
     public options: Options<TData, TParams>
   ) {
-    const { defaultParams, manual } = options
+    const { defaultParams } = options
 
     this.params = defaultParams
   }
 
   setState(s: Partial<FetchState<TData, TParams>> = {}) {
-    this.state.data = s.data
+    if (!isNullable(s.data)) {
+      this.state.data = s.data
+    }
+
     this.state.error = s.error
     this.state.loading = s.loading
   }
@@ -43,6 +49,12 @@ export default class Fetch<TData, TParams extends any[]> {
       return
     }
 
+    this.setState({
+      loading: true,
+      params: params,
+      ...state,
+    })
+
     if (returnNow) {
       return
     }
@@ -50,12 +62,6 @@ export default class Fetch<TData, TParams extends any[]> {
     this.options.onBefore?.(params)
 
     try {
-      this.setState({
-        loading: true,
-        params: params,
-        ...state,
-      })
-
       // 执行请求
       let { servicePromise } = this.runPluginHandler(
         'onRequest',
@@ -67,16 +73,20 @@ export default class Fetch<TData, TParams extends any[]> {
         servicePromise = this.service(...(params || ({} as TParams)))
       }
 
+      // console.time()
       const res = await servicePromise
+      // console.timeEnd()
 
-      setTimeout(() => {
-        this.setState({
-          data: res,
-          error: undefined,
-          loading: false,
-        })
-      }, 2000)
+      this.runPluginHandler('onSuccess', this.service, params)
+
+      this.setState({
+        data: res,
+        error: undefined,
+        loading: false,
+      })
     } catch (error: any) {
+      this.runPluginHandler('onError', this.service, params)
+
       this.setState({
         loading: false,
         error,
@@ -95,5 +105,9 @@ export default class Fetch<TData, TParams extends any[]> {
   refresh() {
     const params = this.params || (data as TParams)
     this.runAsync(...params)
+  }
+
+  cancel() {
+    this.runPluginHandler('onCancel')
   }
 }
