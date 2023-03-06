@@ -2,7 +2,7 @@ import { resolve } from 'path'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { getExportsStatic } from 'pkg-exports'
-import UnoCss from 'unocss/vite'
+import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
@@ -10,12 +10,12 @@ import { defineConfig } from 'vite'
 import Pages from 'vite-plugin-pages'
 
 // https://vitejs.dev/config/
-export default async () => {
+export default defineConfig(async () => {
   const exports = (
     await Promise.allSettled([getExportsStatic('naive-ui')])
   ).map((res) => (res.status === 'fulfilled' ? res.value : []))
 
-  return defineConfig({
+  return {
     resolve: {
       alias: {
         '@': resolve(__dirname, './src'),
@@ -30,11 +30,7 @@ export default async () => {
       vueJsx({
         include: [/.[jt]sx$/, /.vue$/],
       }),
-      UnoCss({
-        preprocess(matcher) {
-          return matcher.startsWith('un-') ? matcher.slice(3) : undefined
-        },
-      }),
+      UnoCSS({}),
       AutoImport({
         imports: [
           'vue',
@@ -67,5 +63,5 @@ export default async () => {
     server: {
       port: 5174,
     },
-  })
-}
+  }
+})
