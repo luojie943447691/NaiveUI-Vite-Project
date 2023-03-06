@@ -6,24 +6,22 @@ function useRequestImplement<TData, TParams extends any[]>(
   options: Options<TData, TParams> = {},
   plugins: Plugin<TData, TParams>[] = []
 ) {
-  const { manual = false, ...rest } = options
-
-  const fetchOptions = {
-    manual,
-    ...rest,
-  }
+  options.manual = options.manual ? true : false
 
   // console.log('创建了')
 
-  const fetchInstance = new Fetch(service, fetchOptions)
+  const fetchInstance = new Fetch(service, options)
 
   fetchInstance.pluginImpls = plugins.map((plugin) =>
-    plugin(fetchInstance, fetchOptions)
+    plugin(fetchInstance, options)
   )
 
   return {
     loadingRef: computed(() => fetchInstance.state?.loading),
+    dataRef: computed(() => fetchInstance.state?.data),
     run: fetchInstance.run.bind(fetchInstance),
+    runAsync: fetchInstance.runAsync.bind(fetchInstance),
+    cancel: fetchInstance.cancel.bind(fetchInstance),
   }
 }
 
