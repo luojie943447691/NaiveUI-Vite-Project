@@ -10,6 +10,8 @@ const usePollingPlugin: Plugin<any, any> = (fetchInstance, options) => {
     ready,
   } = options
 
+  if (!pollingInterval) return {}
+
   const pollingIntervalRef = ref<number>(pollingInterval ?? 0)
   const pollingWhenHiddenRef = ref<boolean>(Boolean(pollingWhenHidden))
 

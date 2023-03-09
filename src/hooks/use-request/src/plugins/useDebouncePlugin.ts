@@ -2,6 +2,7 @@ import { debounce, DebouncedFunc, DebounceSettings } from 'lodash'
 import { Plugin } from '../types'
 
 const useDebouncePlugin: Plugin<any, any> = (fetchInstance, options) => {
+  if (!options.debounceWait) return {}
   let debounceFun: DebouncedFunc<(callback: any) => any> | null = null
   const _originAsync = fetchInstance.runAsync.bind(fetchInstance)
 

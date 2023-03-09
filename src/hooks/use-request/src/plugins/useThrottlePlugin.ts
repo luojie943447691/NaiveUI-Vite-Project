@@ -2,6 +2,7 @@ import { DebouncedFunc, throttle, ThrottleSettings } from 'lodash'
 import { Plugin } from '../types'
 
 const useThrottlePlugin: Plugin<any, any> = (fetchInstance, options) => {
+  if (!options.throttleWait) return {}
   let throttleFunc: DebouncedFunc<(cb: any) => any> | null = null
 
   const _originAsync = fetchInstance.runAsync.bind(fetchInstance)
