@@ -5,7 +5,7 @@ export interface Query {
 }
 
 function getStudentList(params?: Query) {
-  return axios.get('http://localhost:8888/getStudentList', {
+  return axios.get('/api/getStudentList', {
     params,
   })
 }

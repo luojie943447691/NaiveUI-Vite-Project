@@ -50,13 +50,9 @@ const usePollingPlugin: Plugin<any, any> = (fetchInstance, options) => {
     }
   }
 
-  document.addEventListener('visibilitychange', visibilitychange)
-  // watch(
-  //   () => window.document.hidden,
-  //   (hidden) => {
-  //     console.log('hidden', hidden)
-  //   }
-  // )
+  if (pollingWhenHidden) {
+    document.addEventListener('visibilitychange', visibilitychange)
+  }
 
   const doSetInterval = () => {
     clearSetInterval()
@@ -76,12 +72,15 @@ const usePollingPlugin: Plugin<any, any> = (fetchInstance, options) => {
   onUnmounted(() => {
     clearSetInterval()
 
-    document.removeEventListener('visibilitychange', visibilitychange)
+    if (pollingWhenHidden) {
+      document.removeEventListener('visibilitychange', visibilitychange)
+    }
   })
 
   return {
     onBefore(params) {
       const stopNow = ready && !ready(params)
+      isCanceled = false
 
       // 非手动 且已准备好
       if ((!manual || loaded) && !stopNow && pollingIntervalRef.value > 0) {
@@ -93,7 +92,10 @@ const usePollingPlugin: Plugin<any, any> = (fetchInstance, options) => {
         loaded = true
       }
 
-      return {}
+      return {
+        loading: true,
+        data: null,
+      }
     },
     onError(e, params) {
       currentErrCount += 1
@@ -106,6 +108,7 @@ const usePollingPlugin: Plugin<any, any> = (fetchInstance, options) => {
       clearSetInterval()
       watchStop?.()
       isCanceled = true
+      currentErrCount = 0
     },
   }
 }

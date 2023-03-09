@@ -5,7 +5,7 @@ const data: any[] = []
 
 export default class Fetch<TData, TParams extends any[]> {
   pluginImpls: PluginReturn<TData, TParams>[] = []
-  state = reactive({}) as FetchState<TData, TParams>
+  state = reactive({}) as FetchState<TData>
   params: TParams | undefined
 
   // retry 相关
@@ -19,10 +19,12 @@ export default class Fetch<TData, TParams extends any[]> {
     this.params = defaultParams
   }
 
-  setState(s: Partial<FetchState<TData, TParams>> = {}) {
-    if (!isNullable(s.data)) {
-      this.state.data = s.data
-    }
+  setState(s: Partial<FetchState<TData>> = {}) {
+    // if (!isNullable(s.data)) {
+    //   this.state.data = s.data
+    // }
+
+    this.state.data = s.data
 
     this.state.error = s.error
     this.state.loading = s.loading

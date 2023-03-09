@@ -62,6 +62,14 @@ export default defineConfig(async () => {
     ],
     server: {
       port: 5174,
+      proxy: {
+        '^/api': {
+          target: 'http://localhost:8888',
+          rewrite(path) {
+            return path.replace('/api', '')
+          },
+        },
+      },
     },
   }
 })

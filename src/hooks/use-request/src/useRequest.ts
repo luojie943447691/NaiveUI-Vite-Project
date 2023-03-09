@@ -1,4 +1,5 @@
 import useAutoRunPlugin from './plugins/useAutoRunPlugin'
+import useDebouncePlugin from './plugins/useDebouncePlugin'
 import useLoadingDelayPlugin from './plugins/useLoadingDelayPlugin'
 import usePollingPlugin from './plugins/usePollingPlugin'
 import { Options, Plugin, Service } from './types'
@@ -14,6 +15,7 @@ function useRequest<TData, TParams extends any[]>(
     useAutoRunPlugin,
     useLoadingDelayPlugin,
     usePollingPlugin,
+    useDebouncePlugin,
   ] as Plugin<TData, TParams>[])
 }
 

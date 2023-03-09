@@ -66,7 +66,7 @@ export type Plugin<TData, TParams extends any[]> = {
   ): PluginReturn<TData, TParams>
 }
 
-export interface FetchState<TData, TParams extends any[]> {
+export interface FetchState<TData> {
   loading?: boolean
   data?: TData
   error?: Error
@@ -77,7 +77,7 @@ export interface PluginReturn<TData, TParams extends any[]> {
     | ({
         stopNow?: boolean
         returnNow?: boolean
-      } & Partial<FetchState<TData, TParams>>)
+      } & Partial<FetchState<TData>>)
     | void
 
   onRequest?: (

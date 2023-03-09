@@ -1,13 +1,31 @@
+import { debounce } from 'lodash'
 import { darkTheme, dateZhCN, zhCN } from 'naive-ui'
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { NaiveUIProvider } from './common/components/NaiveUIProvider'
 import useRequest from './hooks/use-request'
 import { RLayout } from './layout/layout'
-import postStudentList from './request/postTest'
+// import postStudentList from './request/postTest'
 import getStudentList from './request/test'
 
 const RLayoutTabs = defineAsyncComponent(() => import('./layout/layout-tabs'))
+
+const postStudentList = () => {
+  return new Promise<{ data: any }>((resolve) => {
+    setTimeout(() => {
+      console.log('请求中...')
+
+      resolve({
+        data: [
+          {
+            id: 1,
+            name: '张三',
+          },
+        ],
+      })
+    }, 1000)
+  })
+}
 
 export default defineComponent({
   setup() {
@@ -28,28 +46,28 @@ export default defineComponent({
       return localTheme === 'lightTheme' ? null : darkTheme
     })
 
-    const pollingErrorRetryCountRef = ref(2)
+    const pollingErrorRetryCountRef = ref(500)
 
     // 测试  request
     const { loadingRef, dataRef, cancel, run, runAsync } = useRequest(
       async () => {
         const id = Math.ceil(Math.random() * 3)
 
-        const res = await postStudentList({
-          id: id,
-        })
+        const res = await getStudentList({ id: 2 })
 
         // console.log('res', res)
 
         return res.data
       },
       {
+        manual: true,
+        debounceWait: 3000,
         // ready: () => false,
-        loadingDelay: 500,
-        get pollingErrorRetryCount() {
-          return pollingErrorRetryCountRef.value
-        },
-        pollingInterval: 3000,
+        // loadingDelay: 500,
+        // get pollingErrorRetryCount() {
+        //   return pollingErrorRetryCountRef.value
+        // },
+        // pollingInterval: 3000,
       }
     )
 
@@ -61,9 +79,9 @@ export default defineComponent({
           dateLocale={dateZhCN}
         >
           <h1>
-            {loadingRef.value
-              ? '加载中...'
-              : `完成了${dataRef.value?.[0].name}`}
+            标题：
+            {loadingRef.value ? '加载中...' : ''}
+            {dataRef.value?.[0].name}
           </h1>
           <NButton
             onClick={() => {
@@ -77,7 +95,7 @@ export default defineComponent({
               run()
             }}
           >
-            继续
+            发送请求
           </NButton>
           <NaiveUIProvider>
             <RLayout>
