@@ -46,7 +46,7 @@ export default defineComponent({
       return localTheme === 'lightTheme' ? null : darkTheme
     })
 
-    const pollingErrorRetryCountRef = ref(500)
+    const debounceWaitRef = ref(3000)
 
     // 测试  request
     const { loadingRef, dataRef, cancel, run, runAsync } = useRequest(
@@ -61,7 +61,9 @@ export default defineComponent({
       },
       {
         manual: true,
-        debounceWait: 3000,
+        get debounceWait() {
+          return debounceWaitRef.value
+        },
         // ready: () => false,
         // loadingDelay: 500,
         // get pollingErrorRetryCount() {
@@ -96,6 +98,13 @@ export default defineComponent({
             }}
           >
             发送请求
+          </NButton>
+          <NButton
+            onClick={() => {
+              debounceWaitRef.value = 1000
+            }}
+          >
+            修改条件
           </NButton>
           <NaiveUIProvider>
             <RLayout>

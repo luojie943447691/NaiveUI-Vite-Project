@@ -3,6 +3,7 @@ import { Plugin } from '../types'
 
 const useDebouncePlugin: Plugin<any, any> = (fetchInstance, options) => {
   let debounceFun: DebouncedFunc<(callback: any) => any> | null = null
+  const _originAsync = fetchInstance.runAsync.bind(fetchInstance)
 
   const watchStop = watch(
     () => {
@@ -20,8 +21,6 @@ const useDebouncePlugin: Plugin<any, any> = (fetchInstance, options) => {
       debounceTrailing = true,
     }) => {
       if (debounceWait) {
-        const _originAsync = fetchInstance.runAsync.bind(fetchInstance)
-
         const settings: DebounceSettings = {
           leading: debounceLeading,
           trailing: debounceTrailing,
@@ -40,18 +39,18 @@ const useDebouncePlugin: Plugin<any, any> = (fetchInstance, options) => {
             })
           })
         }
-
-        onUnmounted(() => {
-          debounceFun?.cancel()
-          fetchInstance.runAsync = _originAsync
-          watchStop()
-        })
       }
     },
     {
       immediate: true,
     }
   )
+
+  onUnmounted(() => {
+    debounceFun?.cancel()
+    fetchInstance.runAsync = _originAsync
+    watchStop()
+  })
 
   return {
     onCancel() {
