@@ -61,9 +61,12 @@ export default defineComponent({
       },
       {
         manual: true,
-        get debounceWait() {
+        get throttleWait() {
           return debounceWaitRef.value
         },
+        // get debounceWait() {
+        //   return debounceWaitRef.value
+        // },
         // ready: () => false,
         // loadingDelay: 500,
         // get pollingErrorRetryCount() {
