@@ -1,14 +1,14 @@
+import { isNullable } from '@/utils'
 import { Plugin } from '../types'
 
 const useLoadingDelayPlugin: Plugin<any, any> = (
   fetchInstance,
   { loadingDelay, ready }
 ) => {
+  // 如果 loadingDelay 不存在，直接返回
+  if (isNullable(loadingDelay)) return {}
   let timer: NodeJS.Timer | null = null
   let isSuccess = false
-
-  // 如果 loadingDelay 不存在，直接返回
-  if (!loadingDelay) return {}
 
   const clear = () => {
     if (timer) {

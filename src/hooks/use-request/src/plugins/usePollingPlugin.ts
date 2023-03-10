@@ -1,4 +1,5 @@
 import { WatchStopHandle } from 'vue'
+import { isNullable } from '@/utils'
 import { Plugin } from '../types'
 
 const usePollingPlugin: Plugin<any, any> = (fetchInstance, options) => {
@@ -10,7 +11,7 @@ const usePollingPlugin: Plugin<any, any> = (fetchInstance, options) => {
     ready,
   } = options
 
-  if (!pollingInterval) return {}
+  if (isNullable(pollingInterval)) return {}
 
   const pollingIntervalRef = ref<number>(pollingInterval ?? 0)
   const pollingWhenHiddenRef = ref<boolean>(Boolean(pollingWhenHidden))
