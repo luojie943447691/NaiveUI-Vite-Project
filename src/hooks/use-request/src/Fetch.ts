@@ -7,6 +7,11 @@ export default class Fetch<TData, TParams extends any[]> {
   pluginImpls: PluginReturn<TData, TParams>[] = []
   state = reactive({}) as FetchState<TData>
   params: TParams | undefined
+  maxRequestNumber = 3
+  // 所有执行的请求
+  allAromiseArr: Array<Promise<any>> = []
+  // 正在执行的请求
+  excutingPromiseArr: Array<Promise<any>> = []
 
   // retry 相关
 
@@ -75,17 +80,15 @@ export default class Fetch<TData, TParams extends any[]> {
         servicePromise = this.service(...(params || ({} as TParams)))
       }
 
-      // console.time()
       const res = await servicePromise
-      // console.timeEnd()
-
-      this.runPluginHandler('onSuccess', this.service, params)
 
       this.setState({
         data: res,
         error: undefined,
         loading: false,
       })
+
+      this.runPluginHandler('onSuccess', res, params)
     } catch (error: any) {
       this.runPluginHandler('onError', this.service, params)
 
@@ -94,6 +97,46 @@ export default class Fetch<TData, TParams extends any[]> {
         error,
       })
     }
+  }
+
+  asyncPool(
+    poolLimit: number,
+    array: Promise<any>[],
+    iteratorFn: (...p: any[]) => any
+  ) {
+    let i = 0
+
+    const enqueue: () => Promise<any> = () => {
+      // 边界处理，array为空数组
+      if (i === array.length) {
+        return Promise.resolve()
+      }
+
+      // 每调一次enqueue，初始化一个promise
+      const item = array[i++]
+      const p = Promise.resolve().then(() => iteratorFn(item, array))
+      // 放入promises数组
+      this.allAromiseArr.push(p)
+
+      // promise执行完毕，从executing数组中删除
+      const e: Promise<any> = p.then(() =>
+        this.excutingPromiseArr.splice(this.excutingPromiseArr.indexOf(e), 1)
+      )
+
+      // 插入executing数字，表示正在执行的promise
+      this.excutingPromiseArr.push(e)
+      // 使用Promise.rece，每当executing数组中promise数量低于poolLimit，就实例化新的promise并执行
+      let r = Promise.resolve()
+
+      if (this.excutingPromiseArr.length >= poolLimit) {
+        r = Promise.race(this.excutingPromiseArr)
+      }
+
+      // 递归，直到遍历完array
+      return r.then(() => enqueue())
+    }
+
+    return enqueue().then(() => Promise.all(this.allAromiseArr))
   }
 
   run(...params: TParams) {

@@ -1,10 +1,9 @@
 import { TransitionGroup, defineComponent } from 'vue'
-import style from './App1.module.scss'
+import style from './Drag.module.scss'
 
-export default defineComponent({
+export const Drag = defineComponent({
   setup() {
     let dragIndex: number | null = null
-    let enterIndex: number | null = null
 
     function handleDragstart(e: DragEvent, index: number) {
       dragIndex = index
@@ -38,9 +37,9 @@ export default defineComponent({
     const showRef = ref(false)
 
     return () => (
-      <div class='un-h-500px un-w-200px un-m-auto un-flex un-flex-col'>
+      <div class='un-h-50px un-w-200px un-m-auto un-flex un-flex-col'>
         <NButton onClick={() => (showRef.value = !showRef.value)}>切换</NButton>
-        <NDrawer v-model:show={showRef.value} placement='left' show width={500}>
+        <NDrawer v-model:show={showRef.value} placement='left' width={500}>
           <NDrawerContent>
             <div class={style['ul-wrapper']}>
               <TransitionGroup

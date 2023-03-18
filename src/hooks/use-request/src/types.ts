@@ -1,5 +1,6 @@
 import { UnwrapRef } from 'vue'
 import Fetch from './Fetch'
+import { CachedData } from './utils/cache'
 
 export type Service<TData, TParams extends any[]> = (
   ...args: TParams
@@ -43,11 +44,11 @@ export interface Options<TData, TParams extends any[]> {
   throttleTrailing?: boolean
 
   // cache
-  // cacheKey?: string;
-  // cacheTime?: number;
-  // staleTime?: number;
-  // setCache?: (data: CachedData<TData, TParams>) => void;
-  // getCache?: (params: TParams) => CachedData<TData, TParams> | undefined;
+  cacheKey?: string
+  cacheTime?: number
+  staleTime?: number
+  setCache?: (data: CachedData<TData, TParams>) => void
+  getCache?: (params: TParams) => CachedData<TData, TParams> | undefined
 
   // retry
   retryCount?: number
@@ -85,6 +86,7 @@ export interface PluginReturn<TData, TParams extends any[]> {
     params: TParams
   ) => {
     servicePromise?: Promise<TData>
+    rawServicePromise?: Promise<TData>
   }
 
   onSuccess?: (data: TData, params: TParams) => void

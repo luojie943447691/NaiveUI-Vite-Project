@@ -69,6 +69,18 @@ export default defineConfig(async () => {
             return path.replace('/api', '')
           },
         },
+        '^/server1': {
+          target: 'http://localhost:8888',
+          rewrite(path) {
+            return path.replace('/server1', '')
+          },
+        },
+        '^/server2': {
+          target: 'http://localhost:8889',
+          rewrite(path) {
+            return path.replace('/server2', '')
+          },
+        },
       },
     },
   }

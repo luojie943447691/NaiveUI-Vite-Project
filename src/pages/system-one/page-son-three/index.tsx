@@ -1,3 +1,5 @@
+import { Drag } from '@/components/drag'
+import { TestNginx } from '@/components/test-nginx/Index'
 import { useSiderCollapsed } from '@/layout/layout/src/hooks'
 
 export default defineComponent({
@@ -10,7 +12,8 @@ export default defineComponent({
 
     return () => (
       <div style='height:calc(100vh - var(--safe-area-inset-top))'>
-        <NButton onClick={handleHideSider}>隐藏边框(主1-子3)</NButton>
+        <Drag />
+        <TestNginx />
       </div>
     )
   },

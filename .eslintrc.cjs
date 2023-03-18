@@ -24,6 +24,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'import', 'react'],
   rules: {
     // eslint
+    'prefer-const': 'off',
     eqeqeq: ['error', 'always'],
     'padding-line-between-statements': [
       'error',

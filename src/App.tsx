@@ -51,8 +51,6 @@ export default defineComponent({
     // 测试  request
     const { loadingRef, dataRef, cancel, run, runAsync } = useRequest(
       async () => {
-        const id = Math.ceil(Math.random() * 3)
-
         const res = await getStudentList({ id: 2 })
 
         // console.log('res', res)
@@ -60,18 +58,28 @@ export default defineComponent({
         return res.data
       },
       {
+        // -- 手动
         manual: true,
-        get throttleWait() {
-          return debounceWaitRef.value
-        },
+        // -- 缓存
+        // cacheKey: 'student-list',
+        // staleTime: 5 * 1000,
+        // -- 节流
+        // get throttleWait() {
+        //   return debounceWaitRef.value
+        // },
+        // -- 防抖
         // get debounceWait() {
         //   return debounceWaitRef.value
         // },
+        // -- 是否准备好 等准备好再发送请求
         // ready: () => false,
+        // -- 延迟将 loadingRef 设置成 true ，更好的用户体验
         // loadingDelay: 500,
+        // -- 轮询错误尝试次数
         // get pollingErrorRetryCount() {
         //   return pollingErrorRetryCountRef.value
         // },
+        // -- 轮询间隔时间
         // pollingInterval: 3000,
       }
     )
@@ -86,7 +94,7 @@ export default defineComponent({
           <h1>
             标题：
             {loadingRef.value ? '加载中...' : ''}
-            {dataRef.value?.[0].name}
+            {dataRef.value?.[0]?.name}
           </h1>
           <NButton
             onClick={() => {
