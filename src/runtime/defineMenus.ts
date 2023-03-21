@@ -35,7 +35,11 @@ const menus: DefineMenu[] = [
       },
       {
         path: '/system-one/page-son-three',
-        name: '主菜单1-子菜单3',
+        name: 'nginx测试菜单',
+      },
+      {
+        path: '/system-one/keybord',
+        name: '快捷键测试',
       },
     ],
   },

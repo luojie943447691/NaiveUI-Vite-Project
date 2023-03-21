@@ -12,7 +12,7 @@ import {
 } from '@/request/getStudentList2'
 
 export const TestNginx = defineComponent({
-  setup() {
+  setup(props) {
     return () => (
       <>
         <NButton
@@ -27,7 +27,7 @@ export const TestNginx = defineComponent({
             getStudentList1NotAPI()
           }}
         >
-          向服务器1发送请求无 api 前缀
+          向服务器1发送请求无 api 前缀（nginx响应）
         </NButton>
         <NButton
           onClick={() => {
@@ -41,7 +41,7 @@ export const TestNginx = defineComponent({
             getStudentList2NotAPI()
           }}
         >
-          向服务器2发送请求无 api 前缀
+          向服务器2发送请求无 api 前缀（nginx响应）
         </NButton>
         <NButton
           onClick={() => {
@@ -55,7 +55,7 @@ export const TestNginx = defineComponent({
             getStudentList12NotAPI()
           }}
         >
-          向服务器1或者2发送请求无 api 前缀
+          向服务器1或者2发送请求无 api 前缀（nginx响应）
         </NButton>
       </>
     )

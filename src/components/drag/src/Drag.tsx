@@ -38,7 +38,9 @@ export const Drag = defineComponent({
 
     return () => (
       <div class='un-h-50px un-w-200px un-m-auto un-flex un-flex-col'>
-        <NButton onClick={() => (showRef.value = !showRef.value)}>切换</NButton>
+        <NButton onClick={() => (showRef.value = !showRef.value)}>
+          切换拖拽组件
+        </NButton>
         <NDrawer v-model:show={showRef.value} placement='left' width={500}>
           <NDrawerContent>
             <div class={style['ul-wrapper']}>

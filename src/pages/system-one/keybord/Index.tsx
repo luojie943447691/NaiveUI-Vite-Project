@@ -1,4 +1,4 @@
-import { useCombinationKeycode } from './utils/keycode'
+import { useCombinationKeycode } from '@/utils/keycode'
 
 export default defineComponent({
   setup() {
@@ -31,7 +31,7 @@ export default defineComponent({
 
     return () => (
       <div class='un-h-500px un-w-200px un-m-auto un-flex un-flex-col'>
-        <h1>测试</h1>
+        <h1>快捷键测试</h1>
       </div>
     )
   },
