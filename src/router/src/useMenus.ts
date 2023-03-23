@@ -1,6 +1,6 @@
 import { DefineMenu } from '../../runtime/defineMenus'
 
-const menusRef = ref<DefineMenu[]>()
+const menusRef = ref<DefineMenu[]>([])
 
 export function setMenus(menus: DefineMenu[]) {
   menusRef.value = menus

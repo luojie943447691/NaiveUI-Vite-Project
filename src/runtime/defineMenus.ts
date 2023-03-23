@@ -6,12 +6,12 @@ export interface DefineMenu {
   name?: string
   redirect?: string
   access?: (args: any) => boolean
+  /**
+   * 用于不在菜单中，但是需要激活菜单的路由
+   */
+  activeMenu?: string
   children?: DefineMenu[]
 }
-
-// const accessMap: Record<string, boolean> = {
-//   'test-page-two1': true,
-// }
 
 const access = (accessStateKey: string) => (accessState: AccessState) =>
   accessState.menuMap[accessStateKey]
@@ -31,7 +31,7 @@ const menus: DefineMenu[] = [
       },
       {
         path: '/system-one/page-son-two',
-        name: '主菜单1-子菜单2',
+        name: 'useRequest测试',
       },
       {
         path: '/system-one/page-son-three',
@@ -41,6 +41,10 @@ const menus: DefineMenu[] = [
         path: '/system-one/keybord',
         name: '快捷键测试',
       },
+      // {
+      //   path: '/system-one/keybord',
+      //   name: '快捷键测试',
+      // },
     ],
   },
   {

@@ -53,6 +53,7 @@ export const LayoutTabs = defineComponent({
       (currentMenu) => {
         const path = currentMenu?.path
         if (!path) return
+
         if (currentMenu.redirect) return
 
         const index = allTabsRef.value.findIndex((m) => m.path === path)
@@ -189,6 +190,7 @@ export const LayoutTabs = defineComponent({
 
       router.push({
         path: value,
+        replace: true,
       })
     }
 

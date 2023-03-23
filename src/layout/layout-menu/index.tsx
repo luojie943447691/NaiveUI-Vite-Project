@@ -56,9 +56,14 @@ export const LayoutMenu = defineComponent({
 
     const curKeyMenu = computed(() => {
       const currentMenu = currentMenuRef.value
-      menuInstRef.value?.showOption(currentMenu?.path)
 
-      return currentMenu?.path
+      let path = currentMenu?.activeMenu
+        ? currentMenu.activeMenu
+        : currentMenu?.path
+
+      menuInstRef.value?.showOption(path)
+
+      return path
     })
 
     return () => (

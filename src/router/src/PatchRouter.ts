@@ -2,11 +2,10 @@ import { Router } from 'vue-router'
 import { useSelfLoadingBar } from '@/common/hooks/useLoadingBar'
 import { AccessState } from '@/runtime/defineAccessState'
 import { InitialState } from '@/runtime/defineInitialState'
-import { DefineMenu } from '../../runtime/defineMenus'
+import { DefineMenu } from '@/runtime/defineMenus'
 import { Nullable } from '../../types'
 import { MenuToMap } from './MenuToMap'
 import { setAccessState } from './useAccess'
-import { loadingBarStart } from './useLoadingBar'
 import { setMenus } from './useMenus'
 
 interface PatchRouterOption {
