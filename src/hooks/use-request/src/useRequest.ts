@@ -2,8 +2,8 @@ import useAutoRunPlugin from './plugins/useAutoRunPlugin'
 import useCachePlugin from './plugins/useCachePlugin'
 import useDebouncePlugin from './plugins/useDebouncePlugin'
 import useLoadingDelayPlugin from './plugins/useLoadingDelayPlugin'
-import useMaxRequestNumberPlugin from './plugins/useMaxRequestNumberPlugin'
 import usePollingPlugin from './plugins/usePollingPlugin'
+import useRetryPlugin from './plugins/useRetryPlugin'
 import useThrottlePlugin from './plugins/useThrottlePlugin'
 import { Options, Plugin, Service } from './types'
 import useRequestImplement from './useRequestImplement'
@@ -21,7 +21,7 @@ function useRequest<TData, TParams extends any[]>(
     useDebouncePlugin,
     useThrottlePlugin,
     useCachePlugin,
-    // useMaxRequestNumberPlugin,
+    useRetryPlugin,
   ] as Plugin<TData, TParams>[])
 }
 

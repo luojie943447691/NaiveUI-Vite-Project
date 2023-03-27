@@ -1,4 +1,4 @@
-import { isNullable } from '@/utils'
+import { isFunction, isNullable } from '@/utils'
 import { FetchState, Options, PluginReturn, Service } from './types'
 
 const data: any[] = []
@@ -24,7 +24,7 @@ export default class Fetch<TData, TParams extends any[]> {
     this.params = defaultParams
   }
 
-  setState(s: Partial<FetchState<TData>> = {}) {
+  setState(s: FetchState<TData>) {
     // if (!isNullable(s.data)) {
     //   this.state.data = s.data
     // }
@@ -77,7 +77,7 @@ export default class Fetch<TData, TParams extends any[]> {
       )
 
       if (!servicePromise) {
-        servicePromise = this.service(...(params || ({} as TParams)))
+        servicePromise = this.service(...params)
       }
 
       const res = await servicePromise
@@ -96,47 +96,9 @@ export default class Fetch<TData, TParams extends any[]> {
         loading: false,
         error,
       })
+
+      console.error(error)
     }
-  }
-
-  asyncPool(
-    poolLimit: number,
-    array: Promise<any>[],
-    iteratorFn: (...p: any[]) => any
-  ) {
-    let i = 0
-
-    const enqueue: () => Promise<any> = () => {
-      // 边界处理，array为空数组
-      if (i === array.length) {
-        return Promise.resolve()
-      }
-
-      // 每调一次enqueue，初始化一个promise
-      const item = array[i++]
-      const p = Promise.resolve().then(() => iteratorFn(item, array))
-      // 放入promises数组
-      this.allAromiseArr.push(p)
-
-      // promise执行完毕，从executing数组中删除
-      const e: Promise<any> = p.then(() =>
-        this.excutingPromiseArr.splice(this.excutingPromiseArr.indexOf(e), 1)
-      )
-
-      // 插入executing数字，表示正在执行的promise
-      this.excutingPromiseArr.push(e)
-      // 使用Promise.rece，每当executing数组中promise数量低于poolLimit，就实例化新的promise并执行
-      let r = Promise.resolve()
-
-      if (this.excutingPromiseArr.length >= poolLimit) {
-        r = Promise.race(this.excutingPromiseArr)
-      }
-
-      // 递归，直到遍历完array
-      return r.then(() => enqueue())
-    }
-
-    return enqueue().then(() => Promise.all(this.allAromiseArr))
   }
 
   run(...params: TParams) {
@@ -150,6 +112,22 @@ export default class Fetch<TData, TParams extends any[]> {
   refresh() {
     const params = this.params || (data as TParams)
     this.runAsync(...params)
+  }
+
+  refreshAsync() {
+    const params = this.params || (data as TParams)
+
+    return this.runAsync(...params)
+  }
+
+  mutate(data?: TData | ((oldData?: TData) => TData | undefined)) {
+    const targetData = isFunction(data) ? data(this.state.data) : data
+    this.runPluginHandler('onMutate', targetData)
+
+    this.setState({
+      loading: false,
+      data: targetData,
+    })
   }
 
   cancel() {

@@ -5,7 +5,7 @@ import defineMenus from '../runtime/defineMenus'
 import { PatchRouter } from './src/PatchRouter'
 import routes from '~pages'
 
-console.log('routes', routes)
+// console.log('routes', routes)
 
 const router = createRouter({
   history: createWebHashHistory(),

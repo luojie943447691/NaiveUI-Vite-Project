@@ -1,4 +1,5 @@
 import { UnwrapRef } from 'vue'
+import { Nullable } from '@/types'
 import Fetch from './Fetch'
 import { CachedData } from './utils/cache'
 
@@ -68,7 +69,7 @@ export type Plugin<TData, TParams extends any[]> = {
 }
 
 export interface FetchState<TData> {
-  loading?: boolean
+  loading: boolean
   data?: TData
   error?: Error
 }
@@ -94,4 +95,17 @@ export interface PluginReturn<TData, TParams extends any[]> {
   onFinally?: (params: TParams, data?: TData, e?: Error) => void
   onCancel?: () => void
   onMutate?: (data: TData) => void
+}
+
+export interface Result<TData, TParams extends any[]> {
+  loadingRef: ComputedRef<boolean>
+  dataRef: ComputedRef<TData | undefined>
+  error?: Error
+  params: Nullable<TParams>
+  cancel: Fetch<TData, TParams>['cancel']
+  refresh: Fetch<TData, TParams>['refresh']
+  refreshAsync: Fetch<TData, TParams>['refreshAsync']
+  run: Fetch<TData, TParams>['run']
+  runAsync: Fetch<TData, TParams>['runAsync']
+  mutate: Fetch<TData, TParams>['mutate']
 }

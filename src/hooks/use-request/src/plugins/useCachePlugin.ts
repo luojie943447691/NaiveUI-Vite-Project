@@ -45,7 +45,7 @@ const useCachePlugin: Plugin<any, any> = (
     const cacheData = _getCache(cacheKey)
 
     if (cacheData && Object.hasOwnProperty.call(cacheData, 'data')) {
-      fetchInstance.setState({ data: cacheData.data })
+      fetchInstance.state.data = cacheData.data
 
       if (
         staleTime === -1 ||
@@ -57,7 +57,7 @@ const useCachePlugin: Plugin<any, any> = (
 
     // subscribe same cachekey update, trigger update
     unSubscribeRef.value = cacheSubscribe.subscribe(cacheKey, (data) => {
-      fetchInstance.setState({ data })
+      fetchInstance.state.data = data
     })
   })
 
@@ -122,7 +122,7 @@ const useCachePlugin: Plugin<any, any> = (
 
         // resubscribe
         unSubscribeRef.value = cacheSubscribe.subscribe(cacheKey, (d) => {
-          fetchInstance.setState({ data: d })
+          fetchInstance.state.data = d
         })
       }
     },
@@ -138,7 +138,7 @@ const useCachePlugin: Plugin<any, any> = (
 
         // resubscribe
         unSubscribeRef.value = cacheSubscribe.subscribe(cacheKey, (d) => {
-          fetchInstance.setState({ data: d })
+          fetchInstance.state.data = d
         })
       }
     },
