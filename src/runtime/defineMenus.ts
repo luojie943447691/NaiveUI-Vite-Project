@@ -41,10 +41,10 @@ const menus: DefineMenu[] = [
         path: '/system-one/keybord',
         name: '快捷键测试',
       },
-      // {
-      //   path: '/system-one/keybord',
-      //   name: '快捷键测试',
-      // },
+      {
+        path: '/system-one/test-developer',
+        name: '测试发布',
+      },
     ],
   },
   {

@@ -22,6 +22,10 @@ export default defineConfig(async () => {
         '@': resolve(__dirname, './src'),
       },
     },
+    build: {
+      emptyOutDir: true,
+      assetsDir: 'assets',
+    },
     plugins: [
       autoUpdater(),
       vue(),
