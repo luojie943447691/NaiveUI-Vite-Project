@@ -1,4 +1,4 @@
-import { Options, Result } from '../use-request/src/types'
+import { Options, Result } from '../../use-request/src/types'
 
 export type PaginationData<TData> = { total: number; records: TData[] }
 

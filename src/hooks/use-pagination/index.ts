@@ -1,3 +1,3 @@
 export * from './src/usePagination'
 
-export * from './types'
+export * from './src/types'

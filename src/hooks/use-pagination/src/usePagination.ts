@@ -4,7 +4,7 @@ import {
   PaginationParams,
   PaginationResult,
   PaginationService,
-} from '../types'
+} from './types'
 
 export function usePagination<TData, TModel>(
   service: PaginationService<TData, TModel>,
@@ -62,13 +62,16 @@ export function usePagination<TData, TModel>(
     modelReactive.query = model()
   }
 
+  const totalRef = computed(() => result.dataRef.value?.total || 0)
+  const recordsRef = computed(() => result.dataRef.value?.records ?? [])
+
   return {
     ...result,
     pagination: {
       handleSubmit: handleSubmit,
       resetFields: resetFields,
-      recordsRef: computed(() => result.dataRef.value?.records ?? []),
-      totalRef: computed(() => result.dataRef.value?.total ?? 0),
+      recordsRef,
+      totalRef,
       currentRef: toRef(modelReactive, 'current'),
       pageSizeRef: toRef(modelReactive, 'pageSize'),
       handleUpdatePage: handleUpdatePage,

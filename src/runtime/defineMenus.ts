@@ -30,7 +30,7 @@ const menus: DefineMenu[] = [
         name: '主菜单1-子菜单1',
       },
       {
-        path: '/system-one/page-son-two',
+        path: '/system-one/request',
         name: 'useRequest测试',
       },
       {
