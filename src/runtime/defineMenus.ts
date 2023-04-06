@@ -65,6 +65,20 @@ const menus: DefineMenu[] = [
       },
     ],
   },
+  {
+    path: '/svg',
+    name: 'svg学习菜单',
+    children: [
+      {
+        path: '/svg/property',
+        name: 'svg的属性',
+      },
+      {
+        path: '/svg/property',
+        name: 'svg的属性',
+      },
+    ],
+  },
 ]
 
 export default function defineMenus() {
