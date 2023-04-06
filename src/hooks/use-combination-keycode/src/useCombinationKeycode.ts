@@ -1,9 +1,9 @@
+import { addCombinationKeycode } from './combinationKeycode'
 import {
-  addCombinationKeycode,
   AddCombinationKeycodeOption,
   CombinationsTuple,
   UserCombination,
-} from './combinationKeycode'
+} from './types'
 
 export function useCombinationKeycode(
   userCombinations: UserCombination<CombinationsTuple>[],

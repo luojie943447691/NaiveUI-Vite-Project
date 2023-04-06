@@ -5,25 +5,25 @@ export default defineComponent({
     useCombinationKeycode([
       {
         keycodeCombination: 'shift + s',
-        do() {
+        keyboardResponse() {
           console.log('按下了 shift + s')
         },
       },
       {
         keycodeCombination: 'shift + a',
-        do() {
+        keyboardResponse() {
           console.log('按下了 shift + a')
         },
       },
       {
         keycodeCombination: 'control + q',
-        do() {
+        keyboardResponse() {
           console.log('按下了 ctrl + q')
         },
       },
       {
         keycodeCombination: 'control + s',
-        do() {
+        keyboardResponse() {
           console.log('按下了 ctrl + s')
         },
       },
