@@ -9,17 +9,15 @@ export function useCombinationKeycode(
   userCombinations: UserCombination<CombinationsTuple>[],
   options?: AddCombinationKeycodeOption
 ) {
-  const { removeEventListener, addEventListener } = addCombinationKeycode(
-    userCombinations,
-    options
-  )
+  const { removeKeyboardEventListener, addKeyboardEventListener } =
+    addCombinationKeycode(userCombinations, options)
 
   onMounted(() => {
-    addEventListener()
+    addKeyboardEventListener()
   })
 
   onBeforeUnmount(() => {
-    removeEventListener()
+    removeKeyboardEventListener()
   })
 
   return {

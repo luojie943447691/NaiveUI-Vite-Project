@@ -1,4 +1,4 @@
-import { useCombinationKeycode } from '@/hooks/useCombinationKeycode'
+import { useCombinationKeycode } from '@/hooks/use-combination-keycode'
 
 export default defineComponent({
   setup() {

@@ -91,17 +91,17 @@ export function addCombinationKeycode<K extends (typeof keyCodesMap)[number]>(
     })
   }
 
-  const addEventListener = () => {
+  const addKeyboardEventListener = () => {
     target.addEventListener('keydown', fn)
   }
 
-  const removeEventListener = () => {
+  const removeKeyboardEventListener = () => {
     target.removeEventListener('keydown', fn)
   }
 
   return {
-    addEventListener,
-    removeEventListener,
+    addKeyboardEventListener,
+    removeKeyboardEventListener,
   }
 }
 
