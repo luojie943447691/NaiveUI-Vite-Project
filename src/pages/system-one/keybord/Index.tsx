@@ -1,30 +1,30 @@
-import { useCombinationKeycode } from '@/utils/keycode'
+import { useCombinationKeycode } from '@/hooks/useCombinationKeycode'
 
 export default defineComponent({
   setup() {
     useCombinationKeycode([
       {
-        keycodeCombination: ['shift', 's'],
+        keycodeCombination: 'shift + s',
         do() {
           console.log('按下了 shift + s')
         },
       },
       {
-        keycodeCombination: ['shift', 'a'],
+        keycodeCombination: 'shift + a',
         do() {
           console.log('按下了 shift + a')
         },
       },
       {
-        keycodeCombination: ['ctrl', 'a'],
+        keycodeCombination: 'control + q',
         do() {
-          console.log('按下了 ctrl + a')
+          console.log('按下了 ctrl + q')
         },
       },
       {
-        keycodeCombination: ['shift', 'a', 's'],
+        keycodeCombination: 'control + s',
         do() {
-          console.log('按下了 shift + a + s')
+          console.log('按下了 ctrl + s')
         },
       },
     ])
